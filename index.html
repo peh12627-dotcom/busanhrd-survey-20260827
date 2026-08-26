@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>부산광역시 인재개발원 교육훈련계획 의견조사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0e2a47;
+    --blue:#1466b8;
+    --blue-soft:#e8f1fa;
+    --line:#d8dee6;
+    --text:#1c2530;
+    --muted:#68737f;
+    --bg:#f2f4f7;
+    --white:#ffffff;
+    --ok:#0f7a4d;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; padding:32px 16px 64px;
+    background:var(--bg);
+    font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif;
+    color:var(--text);
+    line-height:1.65;
+  }
+  .wrap{max-width:720px;margin:0 auto;}
+
+  /* ── 표지 ── */
+  .cover{
+    background:var(--navy);
+    color:#fff;
+    border-radius:6px 6px 0 0;
+    padding:34px 34px 30px;
+    border-bottom:5px solid var(--blue);
+  }
+  .eyebrow{
+    font-size:12.5px; letter-spacing:3px; font-weight:500;
+    color:#8fb6dd; margin:0 0 14px;
+  }
+  .cover h1{
+    margin:0; font-size:26px; font-weight:900; letter-spacing:-0.6px;
+    line-height:1.35;
+  }
+  .cover p{
+    margin:16px 0 0; font-size:14.5px; font-weight:300; color:#c9dcef;
+  }
+
+  /* ── 본문 카드 ── */
+  .card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-top:none;
+    border-radius:0 0 6px 6px;
+    padding:34px;
+  }
+  .notice{
+    background:var(--blue-soft);
+    border-left:4px solid var(--blue);
+    padding:16px 18px;
+    font-size:14px; color:#28425e;
+    margin-bottom:34px;
+  }
+
+  .field{margin-bottom:32px;}
+  .q-label{
+    display:block; font-size:16px; font-weight:700; color:var(--navy);
+    margin-bottom:6px;
+  }
+  .q-num{
+    display:inline-block; min-width:22px; height:22px; line-height:22px;
+    background:var(--blue); color:#fff; font-size:12px; font-weight:700;
+    text-align:center; border-radius:3px; margin-right:8px; vertical-align:2px;
+  }
+  .q-help{
+    font-size:13px; color:var(--muted); margin:0 0 12px 30px; font-weight:300;
+  }
+  .required{color:#c62828; font-size:13px; margin-left:4px;}
+
+  input[type=text], textarea{
+    width:100%; font-family:inherit; font-size:15px; color:var(--text);
+    border:1px solid var(--line); border-radius:4px; background:#fcfdfe;
+    padding:13px 14px; transition:border-color .15s, box-shadow .15s;
+  }
+  input[type=text]{height:48px;}
+  textarea{min-height:170px; resize:vertical; line-height:1.7;}
+  input[type=text]:focus, textarea:focus{
+    outline:none; border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(20,102,184,.14); background:#fff;
+  }
+  .counter{
+    text-align:right; font-size:12.5px; color:var(--muted); margin-top:6px;
+  }
+
+  .submit-btn{
+    width:100%; height:56px; margin-top:8px;
+    background:var(--navy); color:#fff; border:none; border-radius:4px;
+    font-family:inherit; font-size:17px; font-weight:700; letter-spacing:1px;
+    cursor:pointer; transition:background .15s;
+  }
+  .submit-btn:hover:not(:disabled){background:var(--blue);}
+  .submit-btn:disabled{background:#9aa6b2; cursor:not-allowed;}
+  .submit-btn:focus-visible{outline:3px solid var(--blue); outline-offset:2px;}
+
+  .foot{
+    text-align:center; font-size:12.5px; color:var(--muted);
+    margin-top:22px; font-weight:300;
+  }
+  .err{
+    display:none; background:#fdecea; border-left:4px solid #c62828;
+    color:#8e1b16; font-size:13.5px; padding:12px 16px; border-radius:3px;
+    margin-top:16px;
+  }
+
+  /* ── 완료 모달 ── */
+  .overlay{
+    display:none; position:fixed; inset:0; z-index:100;
+    background:rgba(14,42,71,.55);
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    background:#fff; border-radius:8px; max-width:400px; width:100%;
+    padding:44px 32px 34px; text-align:center;
+    box-shadow:0 18px 50px rgba(0,0,0,.25);
+    animation:pop .28s cubic-bezier(.2,.9,.3,1.3);
+  }
+  @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.96);}to{opacity:1;transform:none;}}
+  .check{
+    width:66px; height:66px; margin:0 auto 22px; border-radius:50%;
+    background:var(--ok); display:flex; align-items:center; justify-content:center;
+  }
+  .check svg{width:34px;height:34px;}
+  .modal h2{margin:0 0 8px; font-size:21px; font-weight:700; color:var(--navy);}
+  .modal p{margin:0; font-size:14px; color:var(--muted); font-weight:300;}
+  .modal button{
+    margin-top:26px; width:100%; height:46px; border:1px solid var(--line);
+    background:#fff; border-radius:4px; font-family:inherit; font-size:15px;
+    font-weight:500; color:var(--text); cursor:pointer;
+  }
+  .modal button:hover{background:var(--bg);}
+
+  @media (prefers-reduced-motion: reduce){
+    .modal{animation:none;}
+  }
+  @media (max-width:560px){
+    body{padding:16px 12px 48px;}
+    .cover, .card{padding:26px 20px;}
+    .cover h1{font-size:21px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="cover">
+    <p class="eyebrow">부산광역시 인재개발원</p>
+    <h1>교육훈련계획 관련 의견조사</h1>
+    <p>여러분의 의견은 교육훈련계획 수립의 소중한 자료로 활용됩니다.</p>
+  </header>
+
+  <main class="card">
+    <div class="notice">
+      아래 두 가지 항목에 답변해 주십시오. 응답 내용은 통계 목적으로만 활용되며,
+      작성에는 약 2분이 소요됩니다.
+    </div>
+
+    <form id="surveyForm" novalidate>
+      <div class="field">
+        <label class="q-label" for="org">
+          <span class="q-num">1</span>소속기관<span class="required">*</span>
+        </label>
+        <p class="q-help">예) 부산광역시 인재개발원, ○○구청 총무과</p>
+        <input type="text" id="org" name="org" maxlength="60" autocomplete="organization"
+               placeholder="소속기관명을 입력해 주십시오">
+      </div>
+
+      <div class="field">
+        <label class="q-label" for="question">
+          <span class="q-num">2</span>부산광역시 인재개발원 교육훈련계획 등과 관련하여 궁금한 점을 적어 주십시오<span class="required">*</span>
+        </label>
+        <p class="q-help">교육과정, 신청 절차, 운영 방식 등 무엇이든 자유롭게 작성해 주십시오.</p>
+        <textarea id="question" name="question" maxlength="1000"
+                  placeholder="궁금한 점을 자유롭게 작성해 주십시오"></textarea>
+        <div class="counter"><span id="count">0</span> / 1,000자</div>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">제출하기</button>
+      <div class="err" id="errBox"></div>
+    </form>
+
+    <p class="foot">부산광역시 인재개발원</p>
+  </main>
+</div>
+
+<!-- 제출 완료 -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="doneTitle">
+  <div class="modal">
+    <div class="check">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"
+           stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2 id="doneTitle">제출 완료되었습니다.<br>감사합니다.</h2>
+    <p>소중한 의견은 교육훈련계획 수립에 반영하겠습니다.</p>
+    <button type="button" id="closeBtn">확인</button>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   ▼▼▼ 이 부분만 본인의 주소로 바꾸면 됩니다 ▼▼▼
+   Google Apps Script 웹앱 배포 후 받은 URL을 붙여넣으세요.
+   (형식: https://script.google.com/macros/s/AKfycb...../exec)
+   ══════════════════════════════════════════════════════════ */
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwuKB7H5iOS_wQY9PD3a5dvk-KtdJ2MLA0f95DtGYWUFIzT2WPdpSZkYGr0ALcrwozM/exec";
+
+const form = document.getElementById("surveyForm");
+const btn = document.getElementById("submitBtn");
+const errBox = document.getElementById("errBox");
+const overlay = document.getElementById("overlay");
+const textarea = document.getElementById("question");
+const counter = document.getElementById("count");
+
+textarea.addEventListener("input", () => {
+  counter.textContent = textarea.value.length.toLocaleString();
+});
+
+function showError(msg){
+  errBox.textContent = msg;
+  errBox.style.display = "block";
+}
+
+form.addEventListener("submit", async function(e){
+  e.preventDefault();
+  errBox.style.display = "none";
+
+  const org = document.getElementById("org").value.trim();
+  const question = textarea.value.trim();
+
+  if(!org){
+    showError("소속기관을 입력해 주십시오.");
+    document.getElementById("org").focus();
+    return;
+  }
+  if(!question){
+    showError("궁금한 점을 입력해 주십시오.");
+    textarea.focus();
+    return;
+  }
+  if(GAS_URL.indexOf("script.google.com") === -1){
+    showError("설정 오류: 코드 상단의 GAS_URL에 웹앱 주소를 입력해 주십시오.");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "제출 중입니다...";
+
+  const payload = { org: org, question: question };
+
+  try {
+    // Content-Type을 지정하지 않아 단순요청(text/plain)으로 전송 → CORS 사전요청 회피
+    const res = await fetch(GAS_URL, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      redirect: "follow"
+    });
+    const data = await res.json();
+    if(data.result !== "success") throw new Error(data.message || "저장 실패");
+    onSuccess();
+  } catch (err) {
+    // 일부 브라우저/네트워크 환경 대비 예비 경로 : 숨김 폼 전송
+    try {
+      await fallbackSubmit(payload);
+      onSuccess();
+    } catch (e2) {
+      btn.disabled = false;
+      btn.textContent = "제출하기";
+      showError("제출에 실패했습니다. 네트워크 상태를 확인한 뒤 다시 시도해 주십시오.");
+    }
+  }
+});
+
+/* 예비 전송 경로 : 숨김 iframe + form POST (CORS 영향을 받지 않음) */
+function fallbackSubmit(payload){
+  return new Promise((resolve, reject) => {
+    const name = "gsFrame" + Date.now();
+    const iframe = document.createElement("iframe");
+    iframe.name = name;
+    iframe.style.display = "none";
+    document.body.appendChild(iframe);
+
+    const f = document.createElement("form");
+    f.action = GAS_URL;
+    f.method = "POST";
+    f.target = name;
+    f.style.display = "none";
+
+    Object.keys(payload).forEach(k => {
+      const i = document.createElement("input");
+      i.type = "hidden"; i.name = k; i.value = payload[k];
+      f.appendChild(i);
+    });
+
+    document.body.appendChild(f);
+    const timer = setTimeout(() => reject(new Error("timeout")), 15000);
+    iframe.onload = () => { clearTimeout(timer); resolve(); };
+    iframe.onerror = () => { clearTimeout(timer); reject(new Error("iframe error")); };
+    f.submit();
+  });
+}
+
+function onSuccess(){
+  overlay.classList.add("show");
+  document.getElementById("closeBtn").focus();
+  form.reset();
+  counter.textContent = "0";
+  btn.disabled = false;
+  btn.textContent = "제출하기";
+}
+
+document.getElementById("closeBtn").addEventListener("click", () => {
+  overlay.classList.remove("show");
+});
+overlay.addEventListener("click", (e) => {
+  if(e.target === overlay) overlay.classList.remove("show");
+});
+</script>
+</body>
+</html>
